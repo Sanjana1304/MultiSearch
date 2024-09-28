@@ -81,23 +81,62 @@ const [isLoading, setIsLoading] = useState(false);
   };
 
   // News API key
-  const fetchArticles = async (term) => {
-    const apiKey = import.meta.env.VITE_NEWS_API_KEY;
-    const pageSize = 10; // Limit to 10 results
-    const response = await fetch(`https://newsapi.org/v2/everything?q=${term}&pageSize=${pageSize}&apiKey=${apiKey}`);
-    const data = await response.json();
+  // const fetchArticles = async (term) => {
+  //   const apiKey = import.meta.env.VITE_NEWS_API_KEY;
+  //   const pageSize = 10; // Limit to 10 results
+  //   const response = await fetch(`https://newsapi.org/v2/everything?q=${term}&pageSize=${pageSize}&apiKey=${apiKey}`);
+  //   const data = await response.json();
   
-    // Map the results to include title, description, and URL
-    return data.articles.map(article => ({
-        type: 'article',
-        title: article.title,
-        url: article.url,
-        description: article.description,
-        thumbnail: article.urlToImage,
-        publishedAt: article.publishedAt,
-        author: article.author
-    }));
-  };
+  //   // Map the results to include title, description, and URL
+  //   return data.articles.map(article => ({
+  //       type: 'article',
+  //       title: article.title,
+  //       url: article.url,
+  //       description: article.description,
+  //       thumbnail: article.urlToImage,
+  //       publishedAt: article.publishedAt,
+  //       author: article.author
+  //   }));
+  // };
+
+  const fetchArticles = async (term) => {
+    const apiKey = import.meta.env.VITE_NEWS_API_KEY; 
+    const pageSize = 10; 
+
+    try {
+        const response = await fetch(`https://newsapi.org/v2/everything?q=${term}&pageSize=${pageSize}&apiKey=${apiKey}`, {
+            method: 'GET',
+            headers: {
+                'Upgrade-Insecure-Requests': '1',
+                'Accept': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.articles) {
+            throw new Error('No articles found');
+        }
+
+        return data.articles.map(article => ({
+            type: 'article',
+            title: article.title,
+            url: article.url,
+            description: article.description,
+            thumbnail: article.urlToImage,
+            publishedAt: article.publishedAt,
+            author: article.author
+        }));
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        return [];
+    }
+};
+
 
   //arXiv API
   const fetchAcademicPapers = async (term) => {
