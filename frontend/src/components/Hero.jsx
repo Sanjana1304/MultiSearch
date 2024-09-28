@@ -127,7 +127,7 @@ const [isLoading, setIsLoading] = useState(false);
 
   //arXiv API
   const fetchAcademicPapers = async (term) => {
-    const response = await fetch(`http://export.arxiv.org/api/query?search_query=${encodeURIComponent(term)}&start=0&max_results=10`);
+    const response = await fetch(`https://export.arxiv.org/api/query?search_query=${encodeURIComponent(term)}&start=0&max_results=10`);
     
     if (!response.ok) {
       throw new Error('Failed to fetch academic papers');
