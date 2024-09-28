@@ -61,6 +61,19 @@ app.get('/api/searchHistory', async (req, res) => {
   }
 });
 
+app.get('/api/fetchArticles', async (req, res) => {
+  const term = req.query.q; // Get search term from query parameters
+  try {
+      const response = await fetch(`https://newsapi.org/v2/everything?q=${term}&pageSize=10&apiKey=${process.env.VITE_NEWS_API_KEY}`);
+      const data = await response.json();
+      res.json(data);
+  } catch (error) {
+      console.error('Error fetching articles:', error);
+      res.status(500).json({ error: 'Failed to fetch articles' });
+  }
+});
+
+
 
 // Start the server
 app.listen(PORT,'0.0.0.0', () => {

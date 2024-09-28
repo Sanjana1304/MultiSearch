@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import SearchResults from './SearchResults';
 import { addSearchTerm } from '../api-client';
+import api from '../api/axiosConfig';
 
 const Hero = () => {
 const [searchTerm, setSearchTerm] = useState('');
@@ -100,29 +101,15 @@ const [isLoading, setIsLoading] = useState(false);
   // };
 
   const fetchArticles = async (term) => {
-    const apiKey = import.meta.env.VITE_NEWS_API_KEY; 
-    const pageSize = 10; 
+    const pageSize = 10; // Limit to 10 results
 
     try {
-        const response = await fetch(`https://newsapi.org/v2/everything?q=${term}&pageSize=${pageSize}&apiKey=${apiKey}`, {
-            method: 'GET',
-            headers: {
-                'Upgrade-Insecure-Requests': '1',
-                'Accept': 'application/json',
-            }
+        const response = await api.get(`/api/fetchArticles`, {
+            params: { q: term } // Pass the search term as a query parameter
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        if (!data.articles) {
-            throw new Error('No articles found');
-        }
-
-        return data.articles.map(article => ({
+        // Map the results to include title, description, and URL
+        return response.data.articles.map(article => ({
             type: 'article',
             title: article.title,
             url: article.url,
@@ -133,7 +120,7 @@ const [isLoading, setIsLoading] = useState(false);
         }));
     } catch (error) {
         console.error('Error fetching articles:', error);
-        return [];
+        throw new Error('Failed to fetch articles');
     }
 };
 
