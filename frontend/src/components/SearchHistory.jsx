@@ -1,6 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { fetchSearchHistories } from '../api-client';
 
 const SearchHistory = () => {
+
+    const [histories, setHistories] = useState([]);
+    useEffect(() => {
+        const fetchHistories = async () => {
+            try {
+                const histories = await fetchSearchHistories();
+                setHistories(histories);
+                console.log('Search Histories:', histories);
+            } catch (error) {
+                console.error('Error fetching search histories:', error);
+            }
+        };
+        fetchHistories();
+    }, []);
+
+
   return (
     <div className='p-3 w-[85%] mx-auto mt-8'>
         <h1 className='font-semibold text-3xl text-green-800'>Search History</h1>
@@ -13,21 +30,15 @@ const SearchHistory = () => {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td className='p-3 border'>1</td>
-                    <td className='p-3 border'>React</td>
-                    <td className='p-3 border'>2021-09-01</td>
-                </tr>
-                <tr>
-                    <td className='p-3 border'>2</td>
-                    <td className='p-3 border'>Vue</td>
-                    <td className='p-3 border'>2021-09-02</td>
-                </tr>
-                <tr>
-                    <td className='p-3 border'>3</td>
-                    <td className='p-3 border'>Angular</td>
-                    <td className='p-3 border'>2021-09-03</td>
-                </tr>
+                {
+                    histories.map((history, index) => (
+                        <tr key={history._id}>
+                            <td className='p-3 border'>{index + 1}</td>
+                            <td className='p-3 border'>{history.searchTerm}</td>
+                            <td className='p-3 border'>{new Date(history.dateSearched).toLocaleString()}</td>
+                        </tr>
+                    ))
+                }
             </tbody>
         </table>
         

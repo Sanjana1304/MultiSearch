@@ -50,6 +50,18 @@ app.post('/api/saveSearchHistory', async (req, res) => {
     }
 });
 
+// Route to get all search histories
+app.get('/api/searchHistory', async (req, res) => {
+  try {
+      const searchHistories = await SearchHistory.find({});
+      res.status(200).json(searchHistories);
+  } catch (err) {
+      console.error('Error fetching search histories:', err);
+      res.status(500).json({ message: 'Error fetching search histories' });
+  }
+});
+
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
