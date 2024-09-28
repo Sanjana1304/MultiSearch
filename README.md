@@ -25,7 +25,7 @@ The results can be then ranked according to views, likes, and relevance to ensur
    - arXiv API: For retrieving academic papers in response to search queries.
 3. **Frontend**: A simple React.js interface allows users to input a search term and view the results.
 4. **Ranking Algorithm**: A custom ranking system was implemented to order results based on views, likes, and relevance.
-5. **Database (MongoDB)**: For storing the search results.
+5. **Database (MongoDB)**: For storing and displaying the search results.
 
 ### Key Functionality
 
@@ -43,6 +43,8 @@ The results can be then ranked according to views, likes, and relevance to ensur
    - Articles, blogs, and papers are ranked by relevance to the search term.
 
 6. **Filters**: Users can filter results by content type (YouTube videos, articles, academic papers, or blogs), allowing for more tailored searches.
+
+7. **Search History**: Users can view their past search histories with its details.
 
 ## Challenges and Solutions
 
