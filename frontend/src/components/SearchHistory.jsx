@@ -9,7 +9,6 @@ const SearchHistory = () => {
             try {
                 const histories = await fetchSearchHistories();
                 setHistories(histories);
-                console.log('Search Histories:', histories);
             } catch (error) {
                 console.error('Error fetching search histories:', error);
             }
@@ -19,14 +18,14 @@ const SearchHistory = () => {
 
 
   return (
-    <div className='p-3 w-[85%] mx-auto mt-8'>
+    <div className='p-3 w-[85%] mx-auto mt-8 mb-10'>
         <h1 className='font-semibold text-3xl text-green-800'>Search History</h1>
         <table className='w-full mt-5'>
             <thead>
                 <tr>
                     <th className='p-3 border'>S/N</th>
                     <th className='p-3 border'>Search Term</th>
-                    <th className='p-3 border'>Date</th>
+                    <th className='p-3 border'>Date Searched</th>
                 </tr>
             </thead>
             <tbody>
