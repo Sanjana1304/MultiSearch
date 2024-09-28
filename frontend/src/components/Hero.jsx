@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import SearchResults from './SearchResults';
+import { addSearchTerm } from '../api-client';
 
 const Hero = () => {
 const [searchTerm, setSearchTerm] = useState('');
@@ -8,11 +9,21 @@ const [results, setResults] = useState([]);
 const [isLoading, setIsLoading] = useState(false);
   
   const handleSearch = async() => {
+    if (!searchTerm) {
+      alert("Please enter a search term.");
+      return;
+    }
     setIsLoading(true);
 
     // Fetch data from APIs
     const fetchedResults = await fetchData(searchTerm);
     setResults(fetchedResults);
+
+    try {
+      const response = await addSearchTerm(searchTerm);
+    } catch (error) {
+      console.error('Error saving search history:', error);
+    }
     setIsLoading(false);
 
     //console.log('Results:', fetchedResults);
@@ -43,7 +54,7 @@ const [isLoading, setIsLoading] = useState(false);
 
   //YouTube Data API key v3
   const fetchYouTubeData = async (term) => {
-    const apiKey = 'AIzaSyBWLKmu1jn5lsSccNusE-H3QL1gmbrpQNc';
+    const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
     
     const searchResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${term}&key=${apiKey}`);
     const searchData = await searchResponse.json();
@@ -71,7 +82,7 @@ const [isLoading, setIsLoading] = useState(false);
 
   // News API key
   const fetchArticles = async (term) => {
-    const apiKey = '3f7f7f577ed14c22919cde08aa99b507';
+    const apiKey = import.meta.env.VITE_NEWS_API_KEY;
     const pageSize = 10; // Limit to 10 results
     const response = await fetch(`https://newsapi.org/v2/everything?q=${term}&pageSize=${pageSize}&apiKey=${apiKey}`);
     const data = await response.json();

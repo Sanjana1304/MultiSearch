@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
 import About from './components/About';
+import SearchHistory from './components/SearchHistory';
 
 const App = () => {
   return(
@@ -13,6 +14,7 @@ const App = () => {
         <div>
         <Header/>
         <Hero/>
+        <SearchHistory/>
       </div>
       }/>
       <Route path="/aboutus" element={<About/>}/>
