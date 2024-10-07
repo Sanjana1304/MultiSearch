@@ -42,6 +42,8 @@ const SearchResults = ({ results }) => {
                 return b.views - a.views; // Assuming `views` is a number
             case 'comments':
                 return b.comments - a.comments; // Assuming `comments` is a number
+            case 'general':
+                return b.likes -a.likes && b.views-a.views && b.comments-a.comments;
             default:
                 return 0; // No sorting
         }
@@ -134,6 +136,16 @@ const SearchResults = ({ results }) => {
                         Comments
                     </label>
 
+                    <label>
+                        <input
+                            type="radio"
+                            value="general"
+                            checked={sortBy === 'general'}
+                            onChange={handleSortChange}
+                        />
+                        General
+                    </label>
+
                 </div>
 
                 <div className='w-[70%]'>
@@ -150,7 +162,7 @@ const SearchResults = ({ results }) => {
                         sortedYoutubeResults.length > 0 &&
                         <>
                         <h1 className='font-semibold p-2 px-6 text-xl'>YouTube Results</h1>
-                        <CardScroller cards={sortedYoutubeResults}/>
+                        <CardScroller cards={sortedYoutubeResults} typee={'youtube'}/>
                         </>
                     }
 
@@ -168,6 +180,10 @@ const SearchResults = ({ results }) => {
                         <h1 className='font-semibold p-2 px-6 text-xl'>Academic Paper Results</h1>
                         <CardScroller cards={filteredPaperResults}/>
                         </>
+                    }
+                    {
+                        
+
                     }
 
                     {

@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PopUp from './PopUp';
+import Modal from './Modal';
 
-const CardScroller = ({ cards }) => {
+const CardScroller = ({ cards,typee }) => {
+    const [openModal, setOpenModal] = useState(false);
+
+    const [urll,seturl] = useState('');
+
+    const closePopUp = () =>{
+        setOpenModal(false);
+    }
+    const handlePopUp = (url) =>{
+        setOpenModal(true);
+        seturl(url);
+    }
   return (
     <div className=" overflow-x-scroll p-4" style={{ whiteSpace: 'nowrap' }}>
       {cards?.map((card, index) => (
-        <a href={card.url} target='_blank' key={index}>
+        // <a href={card.url} target='_blank' key={index}>
+        <button key={index} onClick={() => handlePopUp(card.urlEmbed)}>
         <div
-            key={index}
             className="inline-block card-shadow m-2 p-4 rounded-lg border border-gray-300"
             style={{ width: '300px', minWidth: '250px' }}
         >
@@ -38,10 +51,21 @@ const CardScroller = ({ cards }) => {
                         <p className='font-semibold text-sm text-green-500'>Likes: {card.likes}</p>
                 }
                 <p className='text-[11px] text-gray-500 mt-5'>Published : {card.publishedAt}</p>
+
+                
             </div>
+            
+            
         </div>
-        </a>
+        </button>
+       
       ))}
+      {
+        openModal && 
+        (<Modal onClose={closePopUp}>
+            <PopUp url={urll} typee={typee} />
+        </Modal>)
+      }
     </div>
   );
 };

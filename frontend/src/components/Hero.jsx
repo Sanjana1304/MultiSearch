@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import SearchResults from './SearchResults';
 import { addSearchTerm } from '../api-client';
 import api from '../api/axiosConfig';
+import Modal from './Modal';
+import PopUp from './PopUp';
 
 const Hero = () => {
 const [searchTerm, setSearchTerm] = useState('');
@@ -74,6 +76,7 @@ const [isLoading, setIsLoading] = useState(false);
         description: item.snippet.description,
         publishedAt: item.snippet.publishedAt,
         thumbnail: item.snippet.thumbnails.default.url,
+        urlEmbed: `https://www.youtube.com/embed/${item.id}`,
         url: `https://www.youtube.com/watch?v=${item.id}`,
         likes: item.statistics.likeCount || 0,  // Likes count
         comments: item.statistics.commentCount || 0,  // Comments count
@@ -82,23 +85,6 @@ const [isLoading, setIsLoading] = useState(false);
   };
 
   // News API key
-  // const fetchArticles = async (term) => {
-  //   const apiKey = import.meta.env.VITE_NEWS_API_KEY;
-  //   const pageSize = 10; // Limit to 10 results
-  //   const response = await fetch(`https://newsapi.org/v2/everything?q=${term}&pageSize=${pageSize}&apiKey=${apiKey}`);
-  //   const data = await response.json();
-  
-  //   // Map the results to include title, description, and URL
-  //   return data.articles.map(article => ({
-  //       type: 'article',
-  //       title: article.title,
-  //       url: article.url,
-  //       description: article.description,
-  //       thumbnail: article.urlToImage,
-  //       publishedAt: article.publishedAt,
-  //       author: article.author
-  //   }));
-  // };
 
   const fetchArticles = async (term) => {
     const pageSize = 10; // Limit to 10 results
@@ -113,6 +99,7 @@ const [isLoading, setIsLoading] = useState(false);
             type: 'article',
             title: article.title,
             url: article.url,
+            urlEmbed: article.url,
             description: article.description,
             thumbnail: article.urlToImage,
             publishedAt: article.publishedAt,
@@ -146,6 +133,7 @@ const [isLoading, setIsLoading] = useState(false);
         type: 'paper',
         title: entries[i].getElementsByTagName('title')[0].textContent,
         url: entries[i].getElementsByTagName('id')[0].textContent,
+        urlEmbed: entries[i].getElementsByTagName('id')[0].textContent,
         description: entries[i].getElementsByTagName('summary')[0].textContent,  // Paper abstract/summary
         author: Array.from(entries[i].getElementsByTagName('author')).map(author => author.getElementsByTagName('name')[0].textContent)[0],  // List of authors
         publishedAt: entries[i].getElementsByTagName('published')[0].textContent,  // Publication date
@@ -172,6 +160,7 @@ const [isLoading, setIsLoading] = useState(false);
       type: 'blog',
       title: blog.title,
       url: blog.url,
+      urlEmbed: blog.url,
       description: blog.description,
       likes: blog.positive_reactions_count,
       publishedAt: blog.published_at,
